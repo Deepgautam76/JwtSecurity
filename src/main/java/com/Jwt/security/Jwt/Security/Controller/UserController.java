@@ -22,6 +22,7 @@ public class UserController {
 
     @PostMapping("/user")
     public User createNewUser(@RequestBody User user){
+        System.out.println("Controller:"+user.getUsername() +user.getPassword());
         return userService.creteUser(user);
     }
 }
