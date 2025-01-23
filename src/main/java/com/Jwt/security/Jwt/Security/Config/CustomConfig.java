@@ -21,19 +21,37 @@ public class CustomConfig {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
+    /**
+     * Fist any request comes
+     * That is hit to the SecurityFilterChain
+     * Then apply the filter "UserNamePasswordAuthenticationFilter"
+     * This filter extracts the Username and password
+     * And load them into the security context
+     * To verify the UserName and Password.
+     * That load by the "UserDetailsService" in to security context
+     * */
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors->cors.disable())
-                .sessionManagement(request->request
+                .csrf(custmizer->custmizer.disable())
+                .sessionManagement(management->management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request->request
-                        .requestMatchers("/api/**")
+                        .requestMatchers("/api/v1/**")
                         .authenticated()
                         .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
+
+    /**
+     *  This is CustomAuthentication provider
+     *  Take the username from security context
+     *  Use the "UserDetailsService Interface" to loadUserByUserName
+     *  If a user exists, then set user and password in AuthenticationManager
+     *  To verify the user and password that the user sends in request.
+     */
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
@@ -45,7 +63,7 @@ public class CustomConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12);
     }
 
 }

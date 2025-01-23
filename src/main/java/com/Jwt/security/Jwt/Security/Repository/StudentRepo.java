@@ -1,10 +1,10 @@
 package com.Jwt.security.Jwt.Security.Repository;
 
-import com.Jwt.security.Jwt.Security.Model.Students;
+import com.Jwt.security.Jwt.Security.Model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepo extends JpaRepository<Students,Long> {
+public interface StudentRepo extends JpaRepository<Student,Long> {
 
 }
